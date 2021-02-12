@@ -1,2 +1,1 @@
-// This file is injected as a content script
-console.log("Hello from content script!")
+chrome.runtime.sendMessage({type:'showPageAction'}, (res) => console.log(res));
