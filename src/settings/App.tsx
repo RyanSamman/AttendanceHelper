@@ -1,13 +1,7 @@
 import * as React from 'react'
-
-import { Sections } from './../Sections'
 import useStoreState from './../hooks/useStoreState'
 import SideBar from './SideBar'
 import Content from './Content'
-
-// Chat Element to get data from
-// Add Group
-// Export data
 
 const App = () => {
 	const [selectedPage, setSelectedPage] = React.useState("General");
