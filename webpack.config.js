@@ -3,7 +3,8 @@ const path = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
 
 const config = {
-  mode: "production",
+  mode: "development",
+  devtool: false,
   entry: {
     popup: path.join(__dirname, "src/popup.tsx"),
     settings: path.join(__dirname, "src/settings.tsx"),
