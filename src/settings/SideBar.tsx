@@ -1,6 +1,5 @@
 import * as React from 'react'
-import { Container, Row, Button, ButtonGroup, Card } from 'react-bootstrap'
-import { Sections } from './../Sections'
+import { Button, ButtonGroup } from 'react-bootstrap'
 
 function SideBarButton({ name, selectedPage, setSelectedPage }: SideBarButtonProps) {
 	return (
