@@ -1,73 +1,43 @@
 import * as React from 'react'
-import { Card, Button, ButtonGroup, Dropdown, DropdownButton } from 'react-bootstrap'
-import { GearFill, Github, RecordFill } from 'react-bootstrap-icons'
-import DropdownItem from 'react-bootstrap/esm/DropdownItem'
+import { Card } from 'react-bootstrap'
 import useStoreState from '../hooks/useStoreState'
-import { Sections } from '../Sections'
-
-interface Settings {
-	isOpen: boolean
-	selectedSection?: string
-}
+import Checkbox from '../components/Checkbox'
+import Description from './Description'
+import PopupFooter from './PopupFooter'
+import PopupHeader from './PopupHeader'
+import RecordButton from './RecordButton'
+import SectionsDropdown from './SectionsDropDown'
+import { defaultSettings } from './../util/defaultSettings';
 
 export default function App() {
-	const [settings, setSettings] = useStoreState<Settings>("settings", { isOpen: false })
+	const [settings, setSettings] = useStoreState<Settings>("settings", defaultSettings)
 	const [sections, setSections] = useStoreState<Sections>("sections", {})
-	const wasOpen = React.useRef<boolean>(false)
-
-	const toggleOn = () => {
-		setSettings(s => ({ ...s, isOpen: !s.isOpen }))
-	}
-
+	const cardStyle: React.CSSProperties = { width: '300px', borderRadius: 0 };
 	return (
-		<Card
-			border="primary"
-			bg={'dark'}
-			text={'light'}
-			style={{ width: '300px', height: "500px", borderRadius: 0 }}
-			className="mb-2"
-		>
-			<Card.Header>
-				<div style={{ display: "flex" }}>
-					<div style={{ width: "100%" }}>Attendance Recorder</div>
-					<div style={{ height: "fit-content" }}>
-						<a href="options.html" target="_blank">
-							{<GearFill />}
-						</a>
-					</div>
+		<Card border="primary" bg={'dark'} text={'light'} style={cardStyle} >
+			<PopupHeader />
+			<Card.Body>
+				<Description settings={settings} sections={sections} />
+				<div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
+					<SectionsDropdown
+						settings={settings}
+						setSettings={setSettings}
+						sections={sections}
+					/>
+					<Checkbox
+						label="Download"
+						checked={settings.download}
+						setChecked={download => setSettings(settings => ({ ...settings, download }))}
+					/>
 				</div>
-			</Card.Header>
-			<Card.Body style={{ height: "500px" }}>
-				{settings.isOpen
-					? <p>Recording <RecordFill color="red" /> </p>
-					: <p>Click to Record attendance</p>}
-
-				<DropdownButton
-					title="Select a Section"
-					onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) => console.log(e.target)}
-				>
-					{Object.keys(sections).map(s => (
-						<DropdownItem key={s}>{s}</DropdownItem>
-					))}
-				</DropdownButton>
-
-				<Button
-					style={{ display: "block", width: "100%", marginBottom: "20px" }}
-					// disabled={!sections.length}
-					variant={settings.isOpen ? "danger" : "primary"}
-					onClick={() => toggleOn()}
-				>
-					{settings.isOpen ? "Stop Recording" : "Start Recording"}
-				</Button>
+				<RecordButton
+					sections={sections}
+					settings={settings}
+					setSettings={setSettings}
+					setSections={setSections}
+				/>
 			</Card.Body>
-			<Card.Footer style={{ display: "flex" }}>
-				<p style={{ width: "100%", marginBottom: 0 }}></p>
-				<a target="_blank" href="https://github.com/RyanSamman">
-					<Github />
-				</a>
-			</Card.Footer>
+			<PopupFooter />
 		</Card >
 	)
 }
-
-// 
