@@ -3,7 +3,24 @@ declare module "*.svg" {
   export default content;
 }
 
-declare module "react-dom" {
-  const render: any;
-  export { render };
+interface Section {
+	[date: string]: string[]
 }
+
+interface Sections {
+	[sectionName: string]: Section
+}
+
+interface Settings {
+	isOpen: boolean
+	messagesIndex: undefined | number
+	selectedSection?: string
+	messagesId: string
+	popupId: string
+	download: boolean
+	failPercent: number	
+	developerMode: boolean
+	developerMessagesId: string
+}
+
+type setStoreDataHandler<T> = (callback: (currentData: T) => T) => void

@@ -8,7 +8,7 @@ import * as React from 'react'
  * @returns A Stateful value, a wrapper function around a react hook to update that value, and a function to retrieve the current value from localstorage.
  * 
  */
-export default function useStoreState<T extends object>(name: string, initialState: T): [T, (callback: (currentData: T) => T) => void, () => T] {
+export default function useStoreState<T extends object>(name: string, initialState: T): [T, setStoreDataHandler<T>, () => T] {
 	const initializeCacheIfEmpty = () => {
 		if (!localStorage.getItem(name)) {
 			localStorage.setItem(name, JSON.stringify(initialState))
@@ -30,6 +30,17 @@ export default function useStoreState<T extends object>(name: string, initialSta
 		localStorage.setItem(name, JSON.stringify(newData))
 		setData(newData)
 	}
+
+	React.useEffect(() => {
+		const listener: (ev: StorageEvent) => any = ev => {
+			if (ev.key !== name) 
+				return
+
+			setData(retrieveCacheData)
+		}
+		window.addEventListener("storage", listener);
+		return () => window.removeEventListener("storage", listener)
+	}, [])
 
 	return [data, setStoreData, retrieveCacheData]
 }
