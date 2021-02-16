@@ -39,7 +39,7 @@ export default function RecordButton({ settings, sections, setSettings, setSecti
                     // In Development mode, all messages will be saved
                     ? result.messages
                     // Else, take only the new messages
-                    : result.messages.slice(settings.messagesIndex! + 1)
+                    : result.messages.slice(settings.messagesIndex!)
 
                 const currentDate = new Date()
                 setSections(sections => {
