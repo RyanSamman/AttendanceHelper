@@ -1,12 +1,17 @@
 function getMessageNames(messages: string[]) {
-	return messages
-		// Get the first line of the message
-		.map(m => m.split(/\n+/)[0])
+	const fixedMessages: string[] = []
+	// Get the first line of the message
+	messages.map(m => m.split(/\n+/)[0])
 		// If it contains a date (which will be in the form XX:XX), 
 		// it is a compound message of the previous one.
-		.map((name, index, array) => name.match(/^\d\d:\d\d/)
-			? array[index - 1] // Guranteed not the first
-			: name)
+		.forEach((name, index) => {
+			const message = name.match(/^\d{1,2}:\d{1,2}/)
+				? fixedMessages[index - 1] // Guranteed not the first
+				: name
+
+			fixedMessages[index] = message
+		})
+	return fixedMessages;
 }
 
 function generateGetMessagesCode(messagesId: string, popupId: string) {
